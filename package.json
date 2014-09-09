@@ -1,0 +1,9 @@
+{
+  "name": "facade-network-example",
+  "version": "0.1.0",
+  "dependencies": {
+    "express": "latest",
+    "socket.io": "latest",
+    "lodash": "latest"
+  }
+}
