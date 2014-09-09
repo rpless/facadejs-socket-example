@@ -21,7 +21,13 @@ io.set('transports', ['polling', 'websocket', 'xhr-polling']);
 
 io.sockets.on('connection', function(socket) {
   console.log("Connection Received");
-  clients[socket.id] = { width: 100, height: 100, fillStyle: colors[_.random(2)]};
+  clients[socket.id] = {
+    x: _.random(500),
+    y: _.random(500),
+    width: _.random(100),
+    height: _.random(100),
+    fillStyle: colors[_.random(2)]
+  };
   io.sockets.emit('position', generateRects());
 
 	socket.on('disconnect', function() {
