@@ -4,6 +4,7 @@
   "dependencies": {
     "express": "latest",
     "socket.io": "latest",
-    "lodash": "latest"
+    "lodash": "latest",
+    "box2dnode": "latest"
   }
 }

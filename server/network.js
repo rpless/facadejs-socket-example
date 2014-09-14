@@ -1,5 +1,4 @@
-var _ = require ('lodash'),
-    player = require('./player');
+var _ = require ('lodash');
 
 module.exports = function(server) {
   var io = require('socket.io').listen(server);
@@ -11,8 +10,7 @@ module.exports = function(server) {
     console.log("Connection Received");
     mailbox.push({
       id: socket.id,
-      type: 'make',
-      data: player.makeRandomPlayer()
+      type: 'make'
     });
 
     socket.on('disconnect', function() {
