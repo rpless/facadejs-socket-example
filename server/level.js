@@ -1,7 +1,8 @@
 var fs = require('fs'),
     path = require('path'),
     _ = require('lodash'),
-    levelData = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../shared/level.json')));
+    levelData = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/../shared/level.json'))),
+    Scale = 30;
 
 module.exports.metadata = {
     width: levelData.width,
@@ -26,11 +27,11 @@ module.exports.create = function() {
 
     createFloor: function() {
       bodyDef.type = b2d.b2Body.b2_staticBody;
-      bodyDef.position.x = levelData.width / 2;
-      bodyDef.position.y = 450;
+      bodyDef.position.x = (levelData.width / 2) / Scale;
+      bodyDef.position.y = (10) / Scale;
 
       fixtureDef.shape = new b2d.b2PolygonShape();
-      fixtureDef.shape.SetAsBox(levelData.width / 2, 5);
+      fixtureDef.shape.SetAsBox((levelData.width / 2) / Scale, (5) / Scale);
       world.CreateBody(bodyDef).CreateFixture(fixtureDef);
     },
 
@@ -38,9 +39,9 @@ module.exports.create = function() {
       var p = this.randomPlayer();
       bodyDef.type = b2d.b2Body.b2_dynamicBody;
       fixtureDef.shape = new b2d.b2PolygonShape();
-      fixtureDef.shape.SetAsBox(p.width / 2, p.height / 2);
-      bodyDef.position.x = p.x + p.width / 2;
-      bodyDef.position.y = p.y + p.height / 2;
+      fixtureDef.shape.SetAsBox((p.width / 2) / Scale, (p.height / 2) / Scale);
+      bodyDef.position.x = (p.x) / Scale;
+      bodyDef.position.y = (p.y) / Scale;
       var body = world.CreateBody(bodyDef);
       body.CreateFixture(fixtureDef);
       return {
@@ -54,7 +55,7 @@ module.exports.create = function() {
     randomPlayer: function() {
       return {
         x: _.random(levelData.width),
-        y: 400,
+        y: _.random(levelData.height),
         width: _.random(this.blockMaxWidth),
         height: _.random(this.blockMaxHeight),
         fillStyle: this.colors[_.random(2)]
@@ -71,10 +72,11 @@ module.exports.create = function() {
     update: function() {
       world.Step(1/30, 10, 10);
       var playerData = _.map(players, function(player) {
+        var position = player.physics.GetPosition();
         return {
           fillStyle: player.fillstyle,
-          x: player.physics.GetPosition().x,
-          y: player.physics.GetPosition().y,
+          x: position.x * Scale,
+          y: position.y * Scale,
           width: player.width,
           height: player.height
         };
